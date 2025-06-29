@@ -6,6 +6,7 @@ const PDFViewer = ({
     pdfFile,
     fields,
     onFieldMove,
+    onFieldResize,
     onFieldClick,
     onFieldDoubleClick,
     onFieldDelete,
@@ -111,6 +112,7 @@ const PDFViewer = ({
                                 value={field.value}
                                 placeholder={field.placeholder}
                                 onMove={onFieldMove}
+                                onResize={onFieldResize}
                                 onClick={onFieldClick}
                                 onDoubleClick={onFieldDoubleClick}
                                 onDelete={onFieldDelete}

@@ -106,6 +106,10 @@ const PDFEditor = () => {
         setFields((prevFields) => prevFields.map((field) => (field.id === id ? { ...field, left, top } : field)));
     }, []);
 
+    const resizeField = useCallback((id, width, height) => {
+        setFields((prevFields) => prevFields.map((field) => (field.id === id ? { ...field, width, height } : field)));
+    }, []);
+
     const updateField = useCallback((id, updates) => {
         setFields((prevFields) => prevFields.map((field) => (field.id === id ? { ...field, ...updates } : field)));
     }, []);
@@ -416,6 +420,7 @@ const PDFEditor = () => {
                             pdfFile={pdfFile}
                             fields={fields}
                             onFieldMove={moveField}
+                            onFieldResize={resizeField}
                             onFieldClick={handleFieldClick}
                             onFieldDoubleClick={handleFieldDoubleClick}
                             onFieldDelete={deleteField}
