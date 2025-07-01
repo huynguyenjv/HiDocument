@@ -1,1 +1,13 @@
 /node_modules
+/backend/node_modules
+/.env
+/backend/.env
+/.DS_Store
+/backend/.DS_Store
+/.vscode
+/.idea
+/.next
+/.dist
+/front-end/.next
+/front-end/.dist
+/front-end/node_modules
