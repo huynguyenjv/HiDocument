@@ -1,19 +1,20 @@
-class Annotation extends BaseEntity{
-    constructor(data = {}){
+const BaseEntity = require("./BaseEntity");
+class Annotation extends BaseEntity {
+    constructor(data = {}) {
         super();
         this.id = data.id || BaseEntity.generateUUID();
-        this.documentId = data.documentId || '';
-        this.pageId = data.pageId || '';
-        this.userId = data.userId || '';
-        this.annotationType = data.annotationType || 'text'; // text, highlight, drawing, stamp, signature
-        this.content = data.content || '';
+        this.documentId = data.documentId || "";
+        this.pageId = data.pageId || "";
+        this.userId = data.userId || "";
+        this.annotationType = data.annotationType || "text"; // text, highlight, drawing, stamp, signature
+        this.content = data.content || "";
         this.positionX = data.positionX || 0;
         this.positionY = data.positionY || 0;
         this.width = data.width || 0;
         this.height = data.height || 0;
-        this.color = data.color || '#000000';
+        this.color = data.color || "#000000";
         this.fontSize = data.fontSize || 12;
-        this.fontFamily = data.fontFamily || 'Arial';
+        this.fontFamily = data.fontFamily || "Arial";
         this.opacity = data.opacity !== undefined ? data.opacity : 1.0;
         this.rotation = data.rotation || 0;
         this.isLocked = data.isLocked !== undefined ? data.isLocked : false;
@@ -21,29 +22,29 @@ class Annotation extends BaseEntity{
         this.updatedAt = data.updatedAt || new Date();
     }
 
-     static create(annotationData) {
+    static create(annotationData) {
         return new Annotation(annotationData);
     }
 
     static createHighlight(pageId, selection) {
         return new Annotation({
             pageId,
-            annotationType: 'highlight',
+            annotationType: "highlight",
             positionX: selection.x,
             positionY: selection.y,
             width: selection.width,
             height: selection.height,
-            color: '#FFFF00'
+            color: "#FFFF00",
         });
     }
 
     static createTextNote(pageId, position, text) {
         return new Annotation({
             pageId,
-            annotationType: 'text',
+            annotationType: "text",
             content: text,
             positionX: position.x,
-            positionY: position.y
+            positionY: position.y,
         });
     }
 
@@ -61,8 +62,8 @@ class Annotation extends BaseEntity{
     }
 
     updateStyle(styleData) {
-        const allowedStyles = ['color', 'fontSize', 'fontFamily', 'opacity'];
-        allowedStyles.forEach(style => {
+        const allowedStyles = ["color", "fontSize", "fontFamily", "opacity"];
+        allowedStyles.forEach((style) => {
             if (styleData[style] !== undefined) {
                 this[style] = styleData[style];
             }
@@ -83,3 +84,5 @@ class Annotation extends BaseEntity{
         return this;
     }
 }
+
+module.exports = Annotation;

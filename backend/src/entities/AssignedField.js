@@ -1,22 +1,23 @@
+const BaseEntity = require("./BaseEntity");
 class AssignedField extends BaseEntity {
     constructor(data = {}) {
         super();
         this.id = data.id || BaseEntity.generateUUID();
-        this.requestId = data.requestId || '';
-        this.recipientId = data.recipientId || '';
+        this.requestId = data.requestId || "";
+        this.recipientId = data.recipientId || "";
         this.formFieldId = data.formFieldId || null;
-        this.fieldType = data.fieldType || 'signature'; // signature, initial, text, date, checkbox, etc.
-        this.fieldLabel = data.fieldLabel || '';
+        this.fieldType = data.fieldType || "signature"; // signature, initial, text, date, checkbox, etc.
+        this.fieldLabel = data.fieldLabel || "";
         this.positionX = data.positionX || 0;
         this.positionY = data.positionY || 0;
         this.width = data.width || 0;
         this.height = data.height || 0;
         this.pageNumber = data.pageNumber || 1;
         this.isRequired = data.isRequired !== undefined ? data.isRequired : true;
-        this.placeholderText = data.placeholderText || '';
+        this.placeholderText = data.placeholderText || "";
         this.validationRules = data.validationRules || {};
         this.completedAt = data.completedAt || null;
-        this.fieldValue = data.fieldValue || '';
+        this.fieldValue = data.fieldValue || "";
         this.signatureImageUrl = data.signatureImageUrl || null;
         this.createdAt = data.createdAt || new Date();
     }
@@ -28,14 +29,26 @@ class AssignedField extends BaseEntity {
     static createSignatureField(recipientId, position, pageNumber) {
         return new AssignedField({
             recipientId,
-            fieldType: 'signature',
+            fieldType: "signature",
             positionX: position.x,
             positionY: position.y,
             width: position.width || 200,
             height: position.height || 60,
             pageNumber,
-            fieldLabel: 'Signature'
+            fieldLabel: "Signature",
         });
+    }
+
+    updatePosition(x, y) {
+        this.positionX = x;
+        this.positionY = y;
+        return this;
+    }
+
+    updateSize(width, height) {
+        this.width = width;
+        this.height = height;
+        return this;
     }
 
     setValue(value) {
@@ -52,7 +65,7 @@ class AssignedField extends BaseEntity {
 
     validate() {
         if (this.isRequired && !this.fieldValue && !this.signatureImageUrl) {
-            return { valid: false, message: 'This field is required' };
+            return { valid: false, message: "This field is required" };
         }
 
         // Apply validation rules
@@ -65,13 +78,20 @@ class AssignedField extends BaseEntity {
         }
 
         if (this.validationRules.pattern && !new RegExp(this.validationRules.pattern).test(this.fieldValue)) {
-            return { valid: false, message: 'Invalid format' };
+            return { valid: false, message: "Invalid format" };
         }
 
         return { valid: true };
+    }
+
+    complete() {
+        this.completedAt = new Date();
+        return this;
     }
 
     isCompleted() {
         return this.completedAt !== null;
     }
 }
+
+module.exports = AssignedField;

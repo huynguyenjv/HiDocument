@@ -1,15 +1,16 @@
+const BaseEntity = require("./BaseEntity");
 class Document extends BaseEntity {
-    constructor(data = {}){
+    constructor(data = {}) {
         super();
-        this.id = data.id  || BaseEntity.generateUUID();
-        this.userId = data.userId || '';
-        this.title = data.title || '';
-        this.orginalFileName = data.orginalFileName || '';
-        this.filePath = data.filePath || '';
+        this.id = data.id || BaseEntity.generateUUID();
+        this.userId = data.userId || "";
+        this.title = data.title || "";
+        this.orginalFileName = data.orginalFileName || "";
+        this.filePath = data.filePath || "";
         this.fileSize = data.fileSize || 0;
-        this.mimeType = data.mimeType || '';
+        this.mimeType = data.mimeType || "";
         this.pageCount = data.pageCount || 0;
-        this.thumbnailPath = data.thumbnailPath || '';
+        this.thumbnailPath = data.thumbnailPath || "";
         this.isPublic = data.isPublic !== undefined ? data.isPublic : true;
         this.isTemplate = data.isTemplate !== undefined ? data.isTemplate : false;
         this.lastAccessed = data.lastAccessed || null;
@@ -27,43 +28,44 @@ class Document extends BaseEntity {
         return new Document(documentData);
     }
 
-    updateTitle(newTitle){
+    updateTitle(newTitle) {
         this.title = newTitle;
         this.updatedAt = new Date().toISOString();
         return this;
     }
 
-    updateAccess(){
+    updateAccess() {
         this.lastAccessed = new Date().toISOString();
         return this;
     }
 
-    makePublic(){
+    makePublic() {
         this.isPublic = true;
         this.updatedAt = new Date().toISOString();
         return this;
     }
 
-    makePrivate(){
+    makePrivate() {
         this.isPublic = false;
         this.updatedAt = new Date().toISOString();
         return this;
     }
 
-    setAsTemplate(){
+    setAsTemplate() {
         this.isTemplate = true;
         this.updatedAt = new Date().toISOString();
         return this;
     }
 
-    addPage(page){
+    addPage(page) {
         this.pages.push(page);
         this.pageCount = this.pages.length;
         return this;
     }
 
-    addAnnotation(annotation){
+    addAnnotation(annotation) {
         this.annotations.push(annotation);
         return this;
     }
 }
+module.exports = Document;

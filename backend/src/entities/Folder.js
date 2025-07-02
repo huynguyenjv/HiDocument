@@ -1,14 +1,15 @@
+const BaseEntity = require("./BaseEntity");
 class Folder extends BaseEntity {
     constructor(data = {}) {
         super();
         this.id = data.id || BaseEntity.generateUUID();
-        this.userId = data.userId || '';
-        this.name = data.name || '';
+        this.userId = data.userId || "";
+        this.name = data.name || "";
         this.parentFolderId = data.parentFolderId || null;
-        this.color = data.color || '#3498db';
+        this.color = data.color || "#3498db";
         this.createdAt = data.createdAt || new Date();
         this.updatedAt = data.updatedAt || new Date();
-        
+
         // Related entities
         this.documents = [];
         this.subfolders = [];
@@ -36,7 +37,7 @@ class Folder extends BaseEntity {
     }
 
     removeDocument(documentId) {
-        this.documents = this.documents.filter(d => d.id !== documentId);
+        this.documents = this.documents.filter((d) => d.id !== documentId);
         return this;
     }
 
@@ -45,3 +46,4 @@ class Folder extends BaseEntity {
         return this;
     }
 }
+module.exports = Folder;

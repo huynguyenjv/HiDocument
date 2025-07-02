@@ -1,20 +1,21 @@
+const BaseEntity = require("./BaseEntity");
 class DigitalSignature extends BaseEntity {
     constructor(data = {}) {
         super();
         this.id = data.id || BaseEntity.generateUUID();
-        this.requestId = data.requestId || '';
-        this.recipientId = data.recipientId || '';
+        this.requestId = data.requestId || "";
+        this.recipientId = data.recipientId || "";
         this.assignedFieldId = data.assignedFieldId || null;
-        this.signatureType = data.signatureType || 'drawn'; // drawn, typed, uploaded, certificate
-        this.signatureData = data.signatureData || '';
+        this.signatureType = data.signatureType || "drawn"; // drawn, typed, uploaded, certificate
+        this.signatureData = data.signatureData || "";
         this.signatureImageUrl = data.signatureImageUrl || null;
         this.certificateInfo = data.certificateInfo || {};
-        this.ipAddress = data.ipAddress || '';
-        this.userAgent = data.userAgent || '';
+        this.ipAddress = data.ipAddress || "";
+        this.userAgent = data.userAgent || "";
         this.geolocation = data.geolocation || {};
         this.timestampServer = data.timestampServer || null;
-        this.hashAlgorithm = data.hashAlgorithm || 'SHA-256';
-        this.signatureHash = data.signatureHash || '';
+        this.hashAlgorithm = data.hashAlgorithm || "SHA-256";
+        this.signatureHash = data.signatureHash || "";
         this.isValid = data.isValid !== undefined ? data.isValid : true;
         this.createdAt = data.createdAt || new Date();
     }
@@ -26,19 +27,30 @@ class DigitalSignature extends BaseEntity {
     static createDrawnSignature(recipientId, signatureData, metadata) {
         return new DigitalSignature({
             recipientId,
-            signatureType: 'drawn',
+            signatureType: "drawn",
             signatureData,
             ipAddress: metadata.ipAddress,
             userAgent: metadata.userAgent,
-            geolocation: metadata.geolocation
+            geolocation: metadata.geolocation,
         });
     }
 
     generateHash() {
-        const crypto = require('crypto');
+        const crypto = require("crypto");
         const dataToHash = `${this.recipientId}-${this.signatureData}-${this.createdAt.toISOString()}`;
-        this.signatureHash = crypto.createHash('sha256').update(dataToHash).digest('hex');
+        this.signatureHash = crypto.createHash("sha256").update(dataToHash).digest("hex");
         return this.signatureHash;
+    }
+
+    updateSignatureData(data) {
+        this.signatureData = data;
+        this.generateHash();
+        return this;
+    }
+
+    updateSignatureImage(imageUrl) {
+        this.signatureImageUrl = imageUrl;
+        return this;
     }
 
     invalidate() {
@@ -50,4 +62,10 @@ class DigitalSignature extends BaseEntity {
         this.timestampServer = timestampServer;
         return this;
     }
+
+    validate() {
+        this.isValid = true;
+        return this;
+    }
 }
+module.exports = DigitalSignature;
